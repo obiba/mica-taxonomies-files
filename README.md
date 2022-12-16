@@ -2,7 +2,8 @@
 
 [Mica](https://github.com/obiba/mica2) is OBiBa’s core data web portal application for biobanks or epidemiological studies.
 
-Mica Taxonomies Files is a plugin that provides variable taxonomies from files in YAML format. The files are expected to be found in the folder `MICA_HOME/data/mica-taxonomies-files`
+Mica Taxonomies Files is a plugin that provides variable taxonomies from files in YAML format. The files are looked up in the 
+folder `MICA_HOME/data/mica-taxonomies-files` (default) and other configured locations.
 
 * Have a bug or a question? Please create an issue on [GitHub](https://github.com/obiba/mica-taxonomies-files/issues).
 * Continuous integration is on [Travis](https://travis-ci.org/obiba/mica-taxonomies-files).
