@@ -26,4 +26,4 @@ OBiBa software are open source and made available under the [GPL3 licence](http:
 If you are using OBiBa software, please cite our work in your code, websites, publications or reports.
 
 "The work presented herein was made possible using the OBiBa suite (www.obiba.org), a software suite developed by 
-Maelstrom Research (www.maelstrom-research.org)" and Epigeny (www.epigeny.io)"
+Maelstrom Research (www.maelstrom-research.org) and Epigeny (www.epigeny.io)"
