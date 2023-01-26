@@ -53,8 +53,10 @@ public class TaxonomiesFilesProviderService extends AbstractTaxonomiesProviderSe
 
   @Override
   public List<Taxonomy> getTaxonomies() {
+    // get taxonomies from plugin's data folder
     File dataDir = Paths.get(properties.getProperty("data.dir")).toFile();
     List<Taxonomy> taxonomies = getTaxonomies(dataDir);
+    // get taxonomies from configured file/folder paths
     String files = properties.getProperty("files");
     if (!Strings.isNullOrEmpty(files)) {
       for (String path : Splitter.on(",").trimResults().split(files)) {
@@ -62,11 +64,12 @@ public class TaxonomiesFilesProviderService extends AbstractTaxonomiesProviderSe
         taxonomies.addAll(getTaxonomies(file));
       }
     }
+    // get taxonomies from configured urls
     String urls = properties.getProperty("urls");
     if (!Strings.isNullOrEmpty(urls)) {
       for (String url : Splitter.on(",").trimResults().split(urls)) {
         try {
-          taxonomies.add(getTaxonomy(new URL(url)));
+          taxonomies.add(readTaxonomy(new URL(url)));
         } catch (Exception e) {
           log.warn("Taxonomy URL '{}' cannot be read: {}", url, e.getMessage());
         }
@@ -108,10 +111,6 @@ public class TaxonomiesFilesProviderService extends AbstractTaxonomiesProviderSe
     }
 
     return taxonomies;
-  }
-
-  private Taxonomy getTaxonomy(URL source) {
-    return readTaxonomy(source);
   }
 
   /**
