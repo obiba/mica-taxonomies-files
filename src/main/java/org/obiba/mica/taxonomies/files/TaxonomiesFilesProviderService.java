@@ -16,14 +16,15 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import org.obiba.mica.spi.search.TaxonomyTarget;
 import org.obiba.mica.spi.taxonomies.AbstractTaxonomiesProviderService;
+import org.obiba.mica.spi.taxonomies.TaxonomyImportException;
 import org.obiba.opal.core.domain.taxonomy.Taxonomy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.YamlMapFactoryBean;
-import org.springframework.core.io.FileSystemResource;
 
 import javax.validation.constraints.NotNull;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -59,6 +60,16 @@ public class TaxonomiesFilesProviderService extends AbstractTaxonomiesProviderSe
       for (String path : Splitter.on(",").trimResults().split(files)) {
         File file = Paths.get(path).toFile();
         taxonomies.addAll(getTaxonomies(file));
+      }
+    }
+    String urls = properties.getProperty("urls");
+    if (!Strings.isNullOrEmpty(urls)) {
+      for (String url : Splitter.on(",").trimResults().split(urls)) {
+        try {
+          taxonomies.add(getTaxonomy(new URL(url)));
+        } catch (Exception e) {
+          log.warn("Taxonomy URL '{}' cannot be read: {}", url, e.getMessage());
+        }
       }
     }
     // note: if there are several taxonomies with same name, Mica will handle that
@@ -99,6 +110,10 @@ public class TaxonomiesFilesProviderService extends AbstractTaxonomiesProviderSe
     return taxonomies;
   }
 
+  private Taxonomy getTaxonomy(URL source) {
+    return readTaxonomy(source);
+  }
+
   /**
    * Load taxonomy from file, safely (only report errors in log).
    *
@@ -106,14 +121,11 @@ public class TaxonomiesFilesProviderService extends AbstractTaxonomiesProviderSe
    * @return
    */
   private Taxonomy readFile(File yamlFile) {
-    String resourcePath = yamlFile.getAbsolutePath();
     try {
-      YamlMapFactoryBean factory = new YamlMapFactoryBean();
-      factory.setResources(new FileSystemResource(resourcePath));
-      return mapper.convertValue(factory.getObject(), Taxonomy.class);
-    } catch (Exception e) {
+      return readTaxonomy(yamlFile.toURI().toURL());
+    } catch (MalformedURLException e) {
       log.error("Taxonomy file could not be read: {}", yamlFile.getAbsolutePath(), e);
-      return null;
+      throw new TaxonomyImportException(e);
     }
   }
 }

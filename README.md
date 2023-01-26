@@ -2,8 +2,9 @@
 
 [Mica](https://github.com/obiba/mica2) is OBiBa’s core data web portal application for biobanks or epidemiological studies.
 
-Mica Taxonomies Files is a plugin that provides variable taxonomies from files in YAML format. The files are looked up in the 
-folder `MICA_HOME/data/mica-taxonomies-files` (default) and other configured locations.
+Mica Taxonomies Files is a plugin that provides variable taxonomies from local files or remote URL in YAML format. The local files are looked up 
+in the folder `MICA_HOME/data/mica-taxonomies-files` (default) and in other locations specified by the `files` property. Taxonomy files can also 
+be read from a URL specified by the `urls` property.
 
 * Have a bug or a question? Please create an issue on [GitHub](https://github.com/obiba/mica-taxonomies-files/issues).
 * Continuous integration is on [Travis](https://travis-ci.org/obiba/mica-taxonomies-files).
@@ -24,6 +25,5 @@ OBiBa software are open source and made available under the [GPL3 licence](http:
 
 If you are using OBiBa software, please cite our work in your code, websites, publications or reports.
 
-"The work presented herein was made possible using the OBiBa suite (www.obiba.org), a  software suite developed by Maelstrom Research (www.maelstrom-research.org)"
-
-Implementation of a Mica SPSS source plugin
+"The work presented herein was made possible using the OBiBa suite (www.obiba.org), a software suite developed by 
+Maelstrom Research (www.maelstrom-research.org)" and Epigeny (www.epigeny.io)"
